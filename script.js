@@ -10,7 +10,8 @@ updateClock();
 // Weather API (with placeholder key)
 navigator.geolocation.getCurrentPosition(pos => {
   const { latitude, longitude } = pos.coords;
-  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=YOUR_API_KEY_HERE&units=metric`)
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=5ba92077edeb54d7f582824299aaeb36
+&units=metric`)
     .then(res => res.json())
     .then(data => {
       document.getElementById("weather").textContent = `${data.main.temp}°C, ${data.weather[0].description}`;
