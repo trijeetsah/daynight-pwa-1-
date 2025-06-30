@@ -86,19 +86,23 @@
 
   <script>
     function updateClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-      const timeString = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-      document.getElementById('clock').textContent = timeString;
+  const now = new Date();
+  let hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
 
-      const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-      const dateString = now.toLocaleDateString('en-US', dateOptions);
-      document.getElementById('dateDisplay').textContent = dateString;
-    }
+  const timeString = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+  document.getElementById('clock').textContent = timeString;
+
+  // Robust date formatting
+  const day = now.getDate();
+  const month = now.toLocaleString('default', { month: 'long' });
+  const year = now.getFullYear();
+  const dateString = `${day} ${month} ${year}`;
+  document.getElementById('dateDisplay').textContent = dateString;
+}
 
     setInterval(updateClock, 1000);
     updateClock();
