@@ -31,7 +31,7 @@ function updateWeather() {
         const condition = data.weather[0].description.toLowerCase();
         const city = data.name;
         document.getElementById("weatherInfo").textContent = `${temp}°C ${condition} in ${city}`;
-        setWeatherTheme("rain");
+        setWeatherTheme(condition);
       })
       .catch(err => {
         document.getElementById("weatherInfo").textContent = "Weather unavailable.";
