@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Day-Night Weather PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#222222">
+  <link rel="icon" href="icon.png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      transition: background 2s ease;
+    }
+    .clock {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em;
+      color: white;
+      text-shadow: 2px 2px 4px black;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      z-index: 2;
+    }
+    .weather-info {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 1.5em;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      text-align: center;
+      z-index: 2;
+    }
+    #bgImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+  </style>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(() =>
+        console.log('Service Worker registered')
+      );
+    }
+  </script>
+</head>
+<body>
+  <div id="scene" class="container">
+    <img id="bgImage" src="default.gif" alt="Background Animation">
+    <div class="weather-info" id="weatherInfo">Fetching weather...</div>
+    <div class="clock" id="clock">--:--:--</div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      const timeString = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+      document.getElementById('clock').textContent = timeString;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+  <script src="weather.js"></script>
+</body>
+</html>
