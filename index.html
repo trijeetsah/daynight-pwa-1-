@@ -55,6 +55,18 @@
       left: 0;
       z-index: 0;
     }
+    .date {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 1.5em;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  z-index: 2;
+  font-weight: 500;
+}
   </style>
   <script>
     if ('serviceWorker' in navigator) {
@@ -68,6 +80,7 @@
   <div id="scene" class="container">
     <img id="bgImage" src="default.gif" alt="Background Animation">
     <div class="weather-info" id="weatherInfo">Fetching weather...</div>
+    <div class="date" id="dateDisplay">1 July 2026</div>
     <div class="clock" id="clock">--:--:--</div>
   </div>
 
@@ -81,7 +94,12 @@
       hours = hours % 12 || 12;
       const timeString = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
       document.getElementById('clock').textContent = timeString;
+
+      const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+      const dateString = now.toLocaleDateString('en-US', dateOptions);
+      document.getElementById('dateDisplay').textContent = dateString;
     }
+
     setInterval(updateClock, 1000);
     updateClock();
   </script>
