@@ -75,6 +75,29 @@
       );
     }
   </script>
+  <style>
+#music-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  max-width: 90vw;
+}
+</style>
 </head>
 <body>
   <div id="scene" class="container">
@@ -108,5 +131,48 @@
     updateClock();
   </script>
   <script src="weather.js"></script>
+  <!-- 🎵 Music Icon -->
+<div id="music-icon" onclick="togglePlayer()">🎵</div>
+
+<!-- 🎧 Music Player -->
+<div id="music-player">
+  <audio id="audio-player" controls autoplay>
+    <source id="music-source" src="https://streams.ilovemusic.de/iloveradio106.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <div style="margin-top: 10px;">
+    <button onclick="changeSong('https://www.bensound.com/bensound-music/bensound-sunny.mp3')">Sunny</button>
+    <button onclick="changeSong('https://www.bensound.com/bensound-music/bensound-tomorrow.mp3')">Chill</button>
+    <input type="text" id="youtubeQuery" placeholder="Search YouTube..." />
+    <button onclick="searchYouTube()">🔍</button>
+  </div>
+</div>
+
+<script>
+function togglePlayer() {
+  const player = document.getElementById("music-player");
+  player.style.display = (player.style.display === "none" || !player.style.display) ? "block" : "none";
+  if (!player.style.display || player.style.display === "none") {
+    player.style.display = "block";
+} else {
+    player.style.display = "none";
+}
+}
+
+function changeSong(url) {
+  const audio = document.getElementById("audio-player");
+  const source = document.getElementById("music-source");
+  source.src = url;
+  audio.load();
+  audio.play();
+}
+
+function searchYouTube() {
+  const query = document.getElementById("youtubeQuery").value;
+  if (query) {
+    window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(query), "_blank");
+  }
+}
+</script>
 </body>
 </html>
