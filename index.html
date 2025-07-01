@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,17 +55,37 @@
       z-index: 0;
     }
     .date {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: white;
-  font-size: 1.5em;
-  padding: 10px 15px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  z-index: 2;
-  font-weight: 500;
-}
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 1.5em;
+      padding: 10px 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      z-index: 2;
+      font-weight: 500;
+    }
+    #music-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    #music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      max-width: 90vw;
+    }
   </style>
   <script>
     if ('serviceWorker' in navigator) {
@@ -75,29 +94,6 @@
       );
     }
   </script>
-  <style>
-#music-icon {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 28px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-#music-player {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
-  display: none;
-  z-index: 1000;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  max-width: 90vw;
-}
-</style>
 </head>
 <body>
   <div id="scene" class="container">
@@ -107,71 +103,65 @@
     <div class="clock" id="clock">--:--:--</div>
   </div>
 
+  <!-- 🎵 Music Icon -->
+  <div id="music-icon" onclick="togglePlayer()">🎵</div>
+
+  <!-- 🎷 Music Player -->
+  <div id="music-player">
+    <audio id="audio-player" controls>
+      <source id="music-source" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+    <div style="margin-top: 10px;">
+      <button onclick="changeSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">Track 1</button>
+      <button onclick="changeSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">Track 2</button>
+      <input type="text" id="youtubeQuery" placeholder="Search YouTube..." />
+      <button onclick="searchYouTube()">🔍</button>
+    </div>
+  </div>
+
+  <script src="weather.js"></script>
   <script>
     function updateClock() {
-  const now = new Date();
-  let hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12 || 12;
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
 
-  const timeString = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-  document.getElementById('clock').textContent = timeString;
+      const timeString = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+      document.getElementById('clock').textContent = timeString;
 
-  // Robust date formatting
-  const day = now.getDate();
-  const month = now.toLocaleString('default', { month: 'long' });
-  const year = now.getFullYear();
-  const dateString = `${day} ${month} ${year}`;
-  document.getElementById('dateDisplay').textContent = dateString;
-}
+      const day = now.getDate();
+      const month = now.toLocaleString('default', { month: 'long' });
+      const year = now.getFullYear();
+      const dateString = `${day} ${month} ${year}`;
+      document.getElementById('dateDisplay').textContent = dateString;
+    }
 
     setInterval(updateClock, 1000);
     updateClock();
+
+    function togglePlayer() {
+      const player = document.getElementById("music-player");
+      player.style.display = (player.style.display === "block") ? "none" : "block";
+    }
+
+    function changeSong(url) {
+      const audio = document.getElementById("audio-player");
+      const source = document.getElementById("music-source");
+      source.src = url;
+      audio.load();
+      audio.play();
+    }
+
+    function searchYouTube() {
+      const query = document.getElementById("youtubeQuery").value;
+      if (query) {
+        window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(query), "_blank");
+      }
+    }
   </script>
-  <script src="weather.js"></script>
-  <!-- 🎵 Music Icon -->
-<div id="music-icon" onclick="togglePlayer()">🎵</div>
-
-<!-- 🎧 Music Player -->
-<div id="music-player">
-  <audio id="audio-player" controls autoplay>
-    <source id="music-source" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
-  <div style="margin-top: 10px;">
-    <button onclick="changeSong('https://www.bensound.com/bensound-music/bensound-sunny.mp3')">Sunny</button>
-    <button onclick="changeSong('https://www.bensound.com/bensound-music/bensound-tomorrow.mp3')">Chill</button>
-    <input type="text" id="youtubeQuery" placeholder="Search YouTube..." />
-    <button onclick="searchYouTube()">🔍</button>
-  </div>
-</div>
-
-<script>
-function togglePlayer() {
-  const player = document.getElementById("music-player");
-  if (!player.style.display || player.style.display === "none") {
-    player.style.display = "block";
-  } else {
-    player.style.display = "none";
-  }
-}
-
-function changeSong(url) {
-  const audio = document.getElementById("audio-player");
-  const source = document.getElementById("music-source");
-  source.src = url;
-  audio.load();
-  audio.play();
-}
-
-function searchYouTube() {
-  const query = document.getElementById("youtubeQuery").value;
-  if (query) {
-    window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(query), "_blank");
-  }
-}
-</script>
 </body>
 </html>
